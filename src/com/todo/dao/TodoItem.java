@@ -44,10 +44,9 @@ public class TodoItem {
         this.current_date = current_date;
     }
     
-    @Override
-    public String toString() {
+    public String toSaveString() {
     	return title + "##" + desc + "##" + current_date + "\n";
+ 
     }
-    
    
 }

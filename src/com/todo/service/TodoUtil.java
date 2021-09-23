@@ -20,6 +20,8 @@ import java.io.IOException;
 
 public class TodoUtil {
 	
+	private static final char[] String = null;
+
 	public static void createItem(TodoList list) { // ㅇ아이템 만드는 함수 
 		
 		String title, desc;  //타이틀 디스크립션 선언 
@@ -105,15 +107,15 @@ public class TodoUtil {
 	public static void saveList(TodoList l, String filename) {
 			
 			
-			//Scanner sc = new Scanner(System.in);
-			TodoList list= new TodoList();
+		
+			TodoList t= new TodoList();
 			
-			System.out.println(list);
+			System.out.println(t);
 			try {
 				FileWriter fw = new FileWriter("todolist.txt");
 				
 				
-				fw.write(list);
+				fw.write();
 
 				fw.flush();
 
@@ -132,17 +134,19 @@ public class TodoUtil {
 	}
 	
 	public static void loadList(TodoList l,String filename){
+		
 		  try {
-			  BufferedReader reader = new BufferedReader(new FileReader("todolist.txt"));
+			  BufferedReader reader = new BufferedReader(new FileReader(filename));
 			  String str;
+			  String i = null;
 			  while((str=reader.readLine())!=null){
 				  StringTokenizer st = new StringTokenizer(str, ":");  // String형 s를 \t로 분해하여 넣는다.
-				  String item_name = st.nextToken();
+				  i = st.nextToken();
 				  System.out.println(str);
-				  //Todolist l = new Todolist(item_name);
+				  
 			  }
 			 reader.close();
-			 
+			 //System.out.println(i);
 			 System.out.println("\n학생정보가져오기완료");
 		  	}catch (FileNotFoundException e) {
 				e.printStackTrace();
