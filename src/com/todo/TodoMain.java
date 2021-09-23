@@ -10,58 +10,70 @@ public class TodoMain {
 	
 	public static void start() {
 	
-		Scanner sc = new Scanner(System.in);
-		TodoList l = new TodoList();
-		boolean isList = false;
-		boolean quit = false;
-		do {
-			Menu.displaymenu();
-			isList = false;
-			String choice = sc.next();
-			switch (choice) {
+		Scanner sc = new Scanner(System.in); 
+		TodoList l = new TodoList();  
+		boolean isList = false; 
+		boolean quit = false;  
+		
+		Menu.displaymenu();
+		
+		do { 
+			Menu.prompt(); 
+			isList = false; 
+			String choice = sc.next(); 
+			switch (choice) { 
 
-			case "add":
-				TodoUtil.createItem(l);
-				break;
+			case "add": 
+				TodoUtil.createItem(l);  
+				//TodoUtil.saveList(l,"todolist.txt");
+				TodoUtil.loadList(l, "todolist.txt");
+				break; 
 			
-			case "del":
-				TodoUtil.deleteItem(l);
+			case "del": 
+				TodoUtil.deleteItem(l); 
 				break;
 				
 			case "edit":
-				TodoUtil.updateItem(l);
+				TodoUtil.updateItem(l);  
 				break;
 				
 			case "ls":
-				TodoUtil.listAll(l);
+				TodoUtil.listAll(l); 
+				
 				break;
 
-			case "ls_name_asc":
-				l.sortByName();
+			case "ls_name_asc": 
+				l.sortByName(); 
 				isList = true;
-				break;
+				break; 
 
-			case "ls_name_desc":
-				l.sortByName();
+			case "ls_name_desc": 
+				l.sortByName(); 
 				l.reverseList();
-				isList = true;
+				isList = true; 
+				break; 
+				
+			case "ls_date": 
+				l.sortByDate(); 
+				System.out.println("날짜순으로 정렬합니다."); //추가 
+				isList = true; 
 				break;
 				
-			case "ls_date":
-				l.sortByDate();
-				isList = true;
+			case "help":
+				Menu.displaymenu();
 				break;
 
-			case "exit":
-				quit = true;
-				break;
+			case "exit": 
+				quit = true; 
+				TodoUtil.saveList(l,"todolist.txt");
+				break; 
 
-			default:
-				System.out.println("please enter one of the above mentioned command");
+			default: 
+				System.out.println("정확한 명령어를 입력하십시오. (도움말 : help) ");  //추
 				break;
 			}
 			
-			if(isList) l.listAll();
+			if(isList) TodoUtil.listAll(l); //추가 
 		} while (!quit);
 	}
 }

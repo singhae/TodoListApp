@@ -1,90 +1,163 @@
 package com.todo.service;
 
 import java.util.*;
-
 import com.todo.dao.TodoItem;
 import com.todo.dao.TodoList;
+import java.io.File;
+import java.io.FileNotFoundException;
+//import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.util.StringTokenizer;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+
 
 public class TodoUtil {
 	
-	public static void createItem(TodoList list) {
+	public static void createItem(TodoList list) { // ㅇ아이템 만드는 함수 
 		
-		String title, desc;
-		Scanner sc = new Scanner(System.in);
+		String title, desc;  //타이틀 디스크립션 선언 
+		Scanner sc = new Scanner(System.in); // 입력 받고 
 		
-		System.out.println("\n"
-				+ "========== Create item Section\n"
-				+ "enter the title\n");
+		System.out.println("\n" //출력 
+				+ "[항목추가]\n" 
+				+ "제목을 입력하십시오 > ");
 		
-		title = sc.next();
-		if (list.isDuplicate(title)) {
-			System.out.printf("title can't be duplicate");
+		title = sc.next(); //타이틀에 스트링 입력 
+		
+		if (list.isDuplicate(title)) { //만약 타이틀을 이즈듀플리케이트 함수에서 실행 된다면 
+			System.out.printf("제목이 중복됩니다! "); // 타이틀은 복사되지못한다는 출력 
 			return;
 		}
+		sc.nextLine();
+		System.out.println("내용을 입력하십시오 > "); // 디스크립션을 쳐라. 출력 
+		desc = sc.nextLine().trim(); //받은거 디스크립에 넣기 
 		
-		System.out.println("enter the description");
-		desc = sc.next();
-		
-		TodoItem t = new TodoItem(title, desc);
-		list.addItem(t);
+		TodoItem t = new TodoItem(title, desc);  //투두아이템 타입의 티가 투두아이템 메소드 생성 
+		list.addItem(t); //리스트 에드아이템 메소드에 티 값을 실행..?
+		System.out.println("추가되었습니다");
 	}
 
-	public static void deleteItem(TodoList l) {
+	public static void deleteItem(TodoList l) {  //아이템 지우는함수 
 		
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in); //입력 
+		//String title = sc.next(); // 타이틀에 입력 
+		
+		System.out.println("[항목삭제]\n"
+				+"삭제할 항목의 제목을 입력하시오 > ");
 		String title = sc.next();
 		
-		System.out.println("\n"
-				+ "========== Delete Item Section\n"
-				+ "enter the title of item to remove\n"
-				+ "\n");
-		
-		for (TodoItem item : l.getList()) {
-			if (title.equals(item.getTitle())) {
+		for (TodoItem item : l.getList()) { //겟리스트 메소드로 생성된 리스트 엘을 
+			if (title.equals(item.getTitle())) { //만약 겟타이틀메소드 아이템이 엘의 타이틀과 일치 한다면 
 				l.deleteItem(item);
+				System.out.println("삭제되었습니다.");
 				break;
 			}
 		}
 	}
 
 
-	public static void updateItem(TodoList l) {
+	public static void updateItem(TodoList l) { //업데이트아이템 메소드 
 		
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in); //입력 
 		
-		System.out.println("\n"
-				+ "========== Edit Item Section\n"
-				+ "enter the title of the item you want to update\n"
-				+ "\n");
-		String title = sc.next().trim();
-		if (!l.isDuplicate(title)) {
-			System.out.println("title doesn't exist");
+		System.out.println("[항목수정]\n"
+				+ "수정할 항목의 제목을 입력하시오 > ");
+		String title = sc.next().trim(); // 타이틀에 입력 
+		if (!l.isDuplicate(title)) { //만약 이 메소드가 아니라면 
+			System.out.println("없는 제목입니다."); // 출력 
 			return;
 		}
 
-		System.out.println("enter the new title of the item");
-		String new_title = sc.next().trim();
-		if (l.isDuplicate(new_title)) {
-			System.out.println("title can't be duplicate");
+		System.out.println("새 제목을 입력하시오 > ");  //출력 
+		String new_title = sc.next().trim(); //뉴타이틀 입력받기 
+		if (l.isDuplicate(new_title)) { //만약 뉴타이틀이 이 메소드를 성립못시키면 
+			System.out.println("제목이 중복됩니다."); //출력 
 			return;
 		}
-		
-		System.out.println("enter the new description ");
-		String new_description = sc.next().trim();
-		for (TodoItem item : l.getList()) {
-			if (item.getTitle().equals(title)) {
-				l.deleteItem(item);
-				TodoItem t = new TodoItem(new_title, new_description);
-				l.addItem(t);
-				System.out.println("item updated");
+		sc.nextLine();
+		System.out.println("새로운 내용을 입력하십시오. > "); //출력 
+		String new_description = sc.next().trim();  // 뉴디스크립션에넣고 
+		for (TodoItem item : l.getList()) { //겟리스트를 아이템에 넣는 반복문 
+			if (item.getTitle().equals(title)) { //겟타이틀에 있는 아이템이랑 받은 타이틀이랑 일치하면..
+				l.deleteItem(item); //아이템을 지우는 메소드를 실행 
+				TodoItem t = new TodoItem(new_title, new_description); //투두아이템 메소드를 티에 입력 
+				l.addItem(t); // 티를에드아이템메소드에 넣고 
+				System.out.println("업데이트 되었습니다."); //출력 
 			}
 		}
 
 	}
 
-	public static void listAll(TodoList l) {
-		for (TodoItem item : l.getList()) {
-			System.out.println("Item Title: " + item.getTitle() + "  Item Description:  " + item.getDesc());
+	public static void listAll(TodoList l) { //리스트 보여주는 메소드 
+		System.out.println("[전체목록]");
+		for (TodoItem item : l.getList()) { 
+			System.out.println(item.toString());
 		}
+		
 	}
+	public static void saveList(TodoList l, String filename) {
+			
+			
+			//Scanner sc = new Scanner(System.in);
+			TodoList list= new TodoList();
+			
+			System.out.println(list);
+			try {
+				FileWriter fw = new FileWriter("todolist.txt");
+				
+				
+				fw.write(list);
+
+				fw.flush();
+
+				fw.close();
+				
+				System.out.println("파일에 저장되었습니다.");
+				
+			}catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			//System.out.print("받아온 자료 저장하기 ");
+			
+	}
+	
+	public static void loadList(TodoList l,String filename){
+		  try {
+			  BufferedReader reader = new BufferedReader(new FileReader("todolist.txt"));
+			  String str;
+			  while((str=reader.readLine())!=null){
+				  StringTokenizer st = new StringTokenizer(str, ":");  // String형 s를 \t로 분해하여 넣는다.
+				  String item_name = st.nextToken();
+				  System.out.println(str);
+				  //Todolist l = new Todolist(item_name);
+			  }
+			 reader.close();
+			 
+			 System.out.println("\n학생정보가져오기완료");
+		  	}catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		  
+		 }
+
+	@Override
+	public String toString() {
+		return "TodoUtil [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
+	}
+
+	
+		
 }
