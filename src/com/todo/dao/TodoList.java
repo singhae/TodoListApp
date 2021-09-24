@@ -21,7 +21,7 @@ public class TodoList {
 	}
 
 	void editItem(TodoItem t, TodoItem updated) { //
-		int index = list.indexOf(t); //인자로 전달된 객체가 리스트에 존재한다면, 해당객체의 인덱스를 리턴.없으면 -1리턴.
+		int index = list.indexOf(t); 
 		list.remove(index);
 		list.add(updated);
 	}

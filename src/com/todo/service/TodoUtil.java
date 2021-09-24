@@ -99,14 +99,13 @@ public class TodoUtil {
 
 	public static void listAll(TodoList l) { //리스트 보여주는 메소드 
 		int i = 0;
-		for (TodoItem item : l.getList()) { 
-			//System.out.println(item.toString());
-			i++;
-		}
-		System.out.println("[전체목록, 총" + i + "개");
+		System.out.println("[전체목록, 총" + i + "개]");
 		for (TodoItem item : l.getList()) { 
 			System.out.println(item.toString());
+			i++;
 		}
+		
+		
 		
 	}
 	public static void saveList(TodoList l, String filename) {
@@ -118,6 +117,8 @@ public class TodoUtil {
 				}
 
 				fw.close();
+				
+				
 				
 				System.out.println("파일에 저장되었습니다.");
 				

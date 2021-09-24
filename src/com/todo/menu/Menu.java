@@ -4,7 +4,7 @@ public class Menu {
     public static void displaymenu() // 메모리할당을 안해도 사용할 수 잇는 함수  Static , void: 반환할게 없는 
     {
         System.out.println(); //출력 
-        System.out.println("<TOdolist 관리 명령어 사용법>");
+        System.out.println("<Todolist 관리 명령어 사용법>");
         System.out.println("add - 항목추가");  //새로운 아이쳄을 추가하라는글 출력 
         System.out.println("del - 항목제거"); //ㅈ있던 아이템을 삭제하라는글 
         System.out.println("edit - 항목수정"); //아이템을 업데이트 

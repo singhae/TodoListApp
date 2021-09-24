@@ -26,7 +26,7 @@ public class TodoMain {
 
 			case "add": 
 				TodoUtil.createItem(l);  
-				//TodoUtil.loadList(l, "todolist.txt");
+				TodoUtil.loadList(l, "todolist.txt");
 				break; 
 			
 			case "del": 
