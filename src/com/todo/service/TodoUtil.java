@@ -98,33 +98,29 @@ public class TodoUtil {
 	}
 
 	public static void listAll(TodoList l) { //리스트 보여주는 메소드 
-		System.out.println("[전체목록]");
+		int i = 0;
+		for (TodoItem item : l.getList()) { 
+			//System.out.println(item.toString());
+			i++;
+		}
+		System.out.println("[전체목록, 총" + i + "개");
 		for (TodoItem item : l.getList()) { 
 			System.out.println(item.toString());
 		}
 		
 	}
 	public static void saveList(TodoList l, String filename) {
-			
-			
 		
-			TodoList t= new TodoList();
-			
-			System.out.println(t);
 			try {
-				FileWriter fw = new FileWriter("todolist.txt");
-				
-				
-				fw.write();
-
-				fw.flush();
+				FileWriter fw = new FileWriter(filename);
+				for (TodoItem item : l.getList()) { 
+					fw.write(item.toSaveString()); //왜 이렇게 나오는데 
+				}
 
 				fw.close();
 				
 				System.out.println("파일에 저장되었습니다.");
 				
-			}catch (FileNotFoundException e) {
-				e.printStackTrace();
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -136,20 +132,28 @@ public class TodoUtil {
 	public static void loadList(TodoList l,String filename){
 		
 		  try {
-			  BufferedReader reader = new BufferedReader(new FileReader(filename));
+			  BufferedReader reader = new BufferedReader(new FileReader("todolist.txt"));
 			  String str;
-			  String i = null;
+			  //System.out.println(str);
+			  int i = 0;
 			  while((str=reader.readLine())!=null){
-				  StringTokenizer st = new StringTokenizer(str, ":");  // String형 s를 \t로 분해하여 넣는다.
-				  i = st.nextToken();
-				  System.out.println(str);
+				  StringTokenizer st = new StringTokenizer(str, "##");  // ##이 나오는 곳 까지 자른다 .
+				  String title = st.nextToken();
+				  String description = st.nextToken();
+				  String current_date = st.nextToken();
+				  TodoItem item = new TodoItem(title, description);
+				  item.setCurrent_date(current_date);
+				  l.addItem(item);
+				  i++;
+				  //System.out.println(str);
 				  
 			  }
 			 reader.close();
 			 //System.out.println(i);
-			 System.out.println("\n학생정보가져오기완료");
+			 System.out.println(i+"개의 정보 읽기 완료");
 		  	}catch (FileNotFoundException e) {
-				e.printStackTrace();
+		  		System.out.println(filename + "파일이없습니다.");
+				//e.printStackTrace();
 			}catch (IOException e) {
 				e.printStackTrace();
 			}

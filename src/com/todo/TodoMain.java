@@ -21,12 +21,12 @@ public class TodoMain {
 			Menu.prompt(); 
 			isList = false; 
 			String choice = sc.next(); 
+			
 			switch (choice) { 
 
 			case "add": 
 				TodoUtil.createItem(l);  
-				//TodoUtil.saveList(l,"todolist.txt");
-				TodoUtil.loadList(l, "todolist.txt");
+				//TodoUtil.loadList(l, "todolist.txt");
 				break; 
 			
 			case "del": 
