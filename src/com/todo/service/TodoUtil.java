@@ -53,6 +53,8 @@ public class TodoUtil {
 		
 		System.out.println("[항목삭제]\n"
 				+"삭제할 항목의 제목을 입력하시오 > ");
+		//int num =sc.nextInt();
+		
 		String title = sc.next();
 		
 		for (TodoItem item : l.getList()) { //겟리스트 메소드로 생성된 리스트 엘을 
@@ -102,7 +104,7 @@ public class TodoUtil {
 		System.out.println("[전체목록, 총" + l.getList().size() + "개]");
 		for (TodoItem item : l.getList()) { 
 			
-			System.out.println(item.toString());
+			System.out.println(item.toSaveString());
 			
 			i++;
 		}
@@ -127,9 +129,6 @@ public class TodoUtil {
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			//System.out.print("받아온 자료 저장하기 ");
-			
 	}
 	
 	public static void loadList(TodoList l,String filename){
@@ -148,7 +147,6 @@ public class TodoUtil {
 				  item.setCurrent_date(current_date);
 				  l.addItem(item);
 				  i++;
-				  //System.out.println(str);
 				  
 			  }
 			 reader.close();
@@ -163,11 +161,7 @@ public class TodoUtil {
 		  
 		 }
 
-	//@Override
-	//public String toString() {
-	//	return "TodoUtil [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-	//			+ "]";
-	//}
+	
 
 	
 		
