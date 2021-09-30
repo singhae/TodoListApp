@@ -50,8 +50,7 @@ public class TodoItem {
     }
 	@Override
 	public String toString() { //이거 없어서 이상한거 떳구나 
-		return "TodoUtil [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-				+ "]";
+		return title + desc + current_date;
 	}
    
 }
