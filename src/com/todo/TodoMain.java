@@ -15,6 +15,8 @@ public class TodoMain {
 		boolean isList = false; 
 		boolean quit = false;  
 		
+		TodoUtil.loadList(l, "todolist.txt");
+		
 		Menu.displaymenu();
 		
 		do { 
@@ -26,7 +28,7 @@ public class TodoMain {
 
 			case "add": 
 				TodoUtil.createItem(l);  
-				TodoUtil.loadList(l, "todolist.txt");
+				
 				break; 
 			
 			case "del": 
@@ -65,7 +67,7 @@ public class TodoMain {
 
 			case "exit": 
 				quit = true; 
-				TodoUtil.saveList(l,"todolist.txt");
+				
 				break; 
 
 			default: 
@@ -75,5 +77,6 @@ public class TodoMain {
 			
 			if(isList) TodoUtil.listAll(l); //추가 
 		} while (!quit);
-	}
+		TodoUtil.saveList(l,"todolist.txt");
+	} 
 }
