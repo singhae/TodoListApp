@@ -7,6 +7,7 @@ public class TodoItem {
     private String title;
     private String desc;
     private String current_date;
+    
 
 
     public TodoItem(String title, String desc){ //스트링타입의 인자를 갖는 메소드 
