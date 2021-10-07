@@ -24,24 +24,30 @@ public class TodoUtil {
 
 	public static void createItem(TodoList list) { // ㅇ아이템 만드는 함수 
 		
-		String title, desc;  //타이틀 디스크립션 선언 
+		String category,title, desc,due_date;  //타이틀 디스크립션 선언 
 		Scanner sc = new Scanner(System.in); // 입력 받고 
 		
 		System.out.println("\n" //출력 
 				+ "[항목추가]\n" 
-				+ "제목을 입력하십시오 > ");
+				+ "카테고리를 입력하십시오 >");
+		category = sc.next().trim();
 		
-		title = sc.next(); //타이틀에 스트링 입력 
+		System.out.println("\n" //출력 
+				+ "제목을 입력하십시오 >");
+		title = sc.next().trim(); //타이틀에 스트링 입력 
 		
 		if (list.isDuplicate(title)) { //만약 타이틀을 이즈듀플리케이트 함수에서 실행 된다면 
-			System.out.printf("제목이 중복됩니다! "); // 타이틀은 복사되지못한다는 출력 
+			System.out.printf("제목이 중복됩니다!"); // 타이틀은 복사되지못한다는 출력 
 			return;
 		}
 		sc.nextLine();
-		System.out.println("내용을 입력하십시오 > "); // 디스크립션을 쳐라. 출력 
+		System.out.println("내용을 입력하십시오 >"); // 디스크립션을 쳐라. 출력 
 		desc = sc.nextLine().trim(); //받은거 디스크립에 넣기 
 		
-		TodoItem t = new TodoItem(title, desc);  //투두아이템 타입의 티가 투두아이템 메소드 생성 
+		System.out.print("마감일을 입력하십시오 >");
+		due_date = sc.nextLine().trim(); 
+		
+		TodoItem t = new TodoItem(category, title, desc, due_date);  //투두아이템 타입의 티가 투두아이템 메소드 생성 
 		list.addItem(t); //리스트 에드아이템 메소드에 티 값을 실행..?
 		System.out.println("추가되었습니다");
 	}
@@ -55,15 +61,24 @@ public class TodoUtil {
 				+"삭제할 항목의 번호를 입력하시오 > ");
 		int num =sc.nextInt();
 		
-		String title = sc.next();
 		
-		for (TodoItem item : l.getList()) { //겟리스트 메소드로 생성된 리스트 엘을 
-			if (title.equals(item.getTitle())) { //만약 겟타이틀메소드 아이템이 엘의 타이틀과 일치 한다면 
-				l.deleteItem(item);
-				System.out.println("삭제되었습니다.");
-				break;
-			}
+		for (TodoItem item : l.getList()) { 
+		if(num > l.getList().size()+1) {
+			System.out.println("없는 번호입니다. ");
+			
+			return;
+			
 		}
+		}
+		System.out.println((num) + ". " + l.getItem(num-1).toString());
+		
+		System.out.print("위 항목을 삭제하겠습니까? ");
+		String answer = sc.next();
+		if(answer.equals("y")) {
+			l.deleteItem(l.getItem(num-1));
+			System.out.println("삭제되었습니다.");
+		}
+		
 	}
 
 
@@ -72,7 +87,14 @@ public class TodoUtil {
 		Scanner sc = new Scanner(System.in); //입력 
 		
 		System.out.println("[항목수정]\n"
-				+ "수정할 항목의 제목을 입력하시오 > ");
+				+ "수정할 항목의 번호를 입력하시오 > ");
+		int num = sc.nextInt();
+		
+		System.out.println("수정할 항목의 카테고리를 입력하시오 > "); 
+		
+		String new_category = sc.next().trim(); 
+		
+		System.out.println("수정할 항목의 제목을 입력하시오 > ");
 		String title = sc.next().trim(); // 타이틀에 입력 
 		if (!l.isDuplicate(title)) { //만약 이 메소드가 아니라면 
 			System.out.println("없는 제목입니다."); // 출력 
@@ -85,15 +107,19 @@ public class TodoUtil {
 			System.out.println("제목이 중복됩니다."); //출력 
 			return;
 		}
+		System.out.println("수정할을 항목의 마감일 입력하시오 > ");
+		String new_due_date = sc.next().trim(); 
+		
 		sc.nextLine();
 		System.out.println("새로운 내용을 입력하십시오. > "); //출력 
 		String new_description = sc.next().trim();  // 뉴디스크립션에넣고 
 		for (TodoItem item : l.getList()) { //겟리스트를 아이템에 넣는 반복문 
-			if (item.getTitle().equals(title)) { //겟타이틀에 있는 아이템이랑 받은 타이틀이랑 일치하면..
+			if (num == l.indexOf(item)+1) { 
 				l.deleteItem(item); //아이템을 지우는 메소드를 실행 
-				TodoItem t = new TodoItem(new_title, new_description); //투두아이템 메소드를 티에 입력 
+				TodoItem t = new TodoItem(new_category,new_title, new_description, new_due_date); //투두아이템 메소드를 티에 입력 
 				l.addItem(t); // 티를에드아이템메소드에 넣고 
 				System.out.println("업데이트 되었습니다."); //출력 
+				break;
 			}
 		}
 
@@ -104,7 +130,7 @@ public class TodoUtil {
 		System.out.println("[전체목록, 총" + l.getList().size() + "개]");
 		for (TodoItem item : l.getList()) { 
 			
-			System.out.println(item.toSaveString());
+			System.out.println(l.indexOf(item)+1 + ". " + item.toSaveString());
 			
 			i++;
 		}
@@ -134,16 +160,20 @@ public class TodoUtil {
 	public static void loadList(TodoList l,String filename){
 		
 		  try {
-			  BufferedReader reader = new BufferedReader(new FileReader("todolist.txt"));
+			  BufferedReader reader = new BufferedReader(new FileReader(filename));
 			  String str;
-			  //System.out.println(str);
+			  
 			  int i = 0;
 			  while((str=reader.readLine())!=null){
 				  StringTokenizer st = new StringTokenizer(str, "##");  // ##이 나오는 곳 까지 자른다 .
 				  String title = st.nextToken();
-				  String description = st.nextToken();
+				  String desc = st.nextToken();
 				  String current_date = st.nextToken();
-				  TodoItem item = new TodoItem(title, description);
+				  
+				  String category = st.nextToken(); //???????????????????
+				  String due_date = st.nextToken();
+				  
+				  TodoItem item = new TodoItem(category, title, desc,current_date, due_date);
 				  item.setCurrent_date(current_date);
 				  l.addItem(item);
 				  i++;
@@ -151,7 +181,7 @@ public class TodoUtil {
 			  }
 			 reader.close();
 			 //System.out.println(i);
-			 System.out.println(i+"개의 정보 읽기 완료");
+			 System.out.println(i + "개의 정보 읽기 완료");
 		  	}catch (FileNotFoundException e) {
 		  		System.out.println(filename + "파일이없습니다.");
 				//e.printStackTrace();
@@ -160,6 +190,37 @@ public class TodoUtil {
 			}
 		  
 		 }
+
+	public static void findList(TodoList l, String word) {
+		// TODO Auto-generated method stub
+		int count = 0;
+		for (int i=0; i<l.getList().size(); i++) {
+			if(l.getItem(i).getTitle().contains(word)||l.getItem(i).getDesc().contains(word)) {
+				System.out.println((i+1) + ". " + l.getItem(i).toString());
+				count++;
+			}
+		}	
+		
+		System.out.print(l.getList().size());
+		System.out.printf("총 %d개의 항복을 찾았습니다.\n", count);
+	}
+
+	public static void listCateAll(TodoList l) {
+		// TODO Auto-generated method stub
+		Set<String> clist = new HashSet<String>();
+		
+		for (TodoItem t : l.getList()) {
+			clist.add(t.getCategory());
+			
+		}
+		Iterator it = clist.iterator();
+		while (it.hasNext()) {
+			String s = (String)it.next();
+			System.out.print(s);
+			if(it.hasNext()) System.out.print(" / ");
+		}
+		System.out.printf("\n총 %d개의 카테고리가 등록되어 있습니다. \n", clist.size());
+	}
 
 	
 

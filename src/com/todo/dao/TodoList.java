@@ -61,4 +61,10 @@ public class TodoList {
 		}
 		return false; // 같지 않으면 거짓 리턴 
 	}
+	
+	public TodoItem getItem(int num) {
+		return list.get(num);
+	}
+
+	
 }
