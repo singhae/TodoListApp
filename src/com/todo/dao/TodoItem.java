@@ -15,6 +15,8 @@ public class TodoItem {
         this.desc=desc;
         this.category=category;
         this.due_date=due_date;
+        SimpleDateFormat f = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
+        this.current_date=f.format(new Date());
        
     }
     
@@ -71,12 +73,13 @@ public class TodoItem {
     }
     
     public String toSaveString() {
-    	return category + "##" + title + "##" + desc + "##" + current_date + "##" + due_date + "\n";
+    	return "[" + category  + "]" + "-" + title + "-" + desc + "-" + current_date + "-" + due_date + "\n";
  
     }
 	@Override
 	public String toString() { //이거 없어서 이상한거 떳구나 
-		return category + title + desc + current_date + due_date;
+		return "[" + category + "]" + title + desc + current_date + due_date; // 지금 순서가 이상하다커런트데이트 먼저 나오면 어쩌자는거야 
+		
 	}
 
 	

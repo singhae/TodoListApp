@@ -32,8 +32,7 @@ public class TodoUtil {
 				+ "카테고리를 입력하십시오 >");
 		category = sc.next().trim();
 		
-		System.out.println("\n" //출력 
-				+ "제목을 입력하십시오 >");
+		System.out.println("제목을 입력하십시오 >");
 		title = sc.next().trim(); //타이틀에 스트링 입력 
 		
 		if (list.isDuplicate(title)) { //만약 타이틀을 이즈듀플리케이트 함수에서 실행 된다면 
@@ -44,7 +43,7 @@ public class TodoUtil {
 		System.out.println("내용을 입력하십시오 >"); // 디스크립션을 쳐라. 출력 
 		desc = sc.nextLine().trim(); //받은거 디스크립에 넣기 
 		
-		System.out.print("마감일을 입력하십시오 >");
+		System.out.println("마감일을 입력하십시오 >");
 		due_date = sc.nextLine().trim(); 
 		
 		TodoItem t = new TodoItem(category, title, desc, due_date);  //투두아이템 타입의 티가 투두아이템 메소드 생성 
@@ -82,41 +81,43 @@ public class TodoUtil {
 	}
 
 
-	public static void updateItem(TodoList l) { //업데이트아이템 메소드 
+	public static void updateItem(TodoList l) { //업데이트아이템 메소드  여기 지금 이상하다 
 		
 		Scanner sc = new Scanner(System.in); //입력 
 		
 		System.out.println("[항목수정]\n"
 				+ "수정할 항목의 번호를 입력하시오 > ");
 		int num = sc.nextInt();
+		System.out.println((num) + ". " + l.getItem(num-1).toString());
 		
-		System.out.println("수정할 항목의 카테고리를 입력하시오 > "); 
+		System.out.println("새 카테고리를 입력하시오 > "); 
 		
 		String new_category = sc.next().trim(); 
 		
-		System.out.println("수정할 항목의 제목을 입력하시오 > ");
-		String title = sc.next().trim(); // 타이틀에 입력 
-		if (!l.isDuplicate(title)) { //만약 이 메소드가 아니라면 
-			System.out.println("없는 제목입니다."); // 출력 
-			return;
-		}
-
+	
 		System.out.println("새 제목을 입력하시오 > ");  //출력 
 		String new_title = sc.next().trim(); //뉴타이틀 입력받기 
-		if (l.isDuplicate(new_title)) { //만약 뉴타이틀이 이 메소드를 성립못시키면 
+		/*if (l.isDuplicate(new_title)) { //만약 뉴타이틀이 이 메소드를 성립못시키면 
 			System.out.println("제목이 중복됩니다."); //출력 
 			return;
 		}
-		System.out.println("수정할을 항목의 마감일 입력하시오 > ");
-		String new_due_date = sc.next().trim(); 
+		*/
+		sc.nextLine(); //중요,,,,,
 		
-		sc.nextLine();
 		System.out.println("새로운 내용을 입력하십시오. > "); //출력 
-		String new_description = sc.next().trim();  // 뉴디스크립션에넣고 
+		String new_desc = sc.nextLine().trim();  // 얘를 못받고 있네 지금...
+		//System.out.println(new_desc);
+		
+		
+		System.out.println("새 마감일 입력하시오 > "); 
+		String new_due_date = sc.nextLine().trim(); 
+		//System.out.println(new_due_date);
+		//sc.nextLine();
+		
 		for (TodoItem item : l.getList()) { //겟리스트를 아이템에 넣는 반복문 
 			if (num == l.indexOf(item)+1) { 
 				l.deleteItem(item); //아이템을 지우는 메소드를 실행 
-				TodoItem t = new TodoItem(new_category,new_title, new_description, new_due_date); //투두아이템 메소드를 티에 입력 
+				TodoItem t = new TodoItem(new_category, new_title, new_desc, new_due_date); //투두아이템 메소드를 티에 입력 
 				l.addItem(t); // 티를에드아이템메소드에 넣고 
 				System.out.println("업데이트 되었습니다."); //출력 
 				break;
@@ -128,6 +129,8 @@ public class TodoUtil {
 	public static void listAll(TodoList l) { //리스트 보여주는 메소드 
 		int i = 0;
 		System.out.println("[전체목록, 총" + l.getList().size() + "개]");
+		
+		
 		for (TodoItem item : l.getList()) { 
 			
 			System.out.println(l.indexOf(item)+1 + ". " + item.toSaveString());
@@ -135,7 +138,7 @@ public class TodoUtil {
 			i++;
 		}
 		
-		//System.out.print(l.getList().size());
+		
 		
 	}
 	public static void saveList(TodoList l, String filename) {
@@ -165,7 +168,7 @@ public class TodoUtil {
 			  
 			  int i = 0;
 			  while((str=reader.readLine())!=null){
-				  StringTokenizer st = new StringTokenizer(str, "##");  // ##이 나오는 곳 까지 자른다 .
+				  StringTokenizer st = new StringTokenizer(str, "-");  // ##이 나오는 곳 까지 자른다 .
 				  String title = st.nextToken();
 				  String desc = st.nextToken();
 				  String current_date = st.nextToken();
@@ -174,7 +177,7 @@ public class TodoUtil {
 				  String due_date = st.nextToken();
 				  
 				  TodoItem item = new TodoItem(category, title, desc,current_date, due_date);
-				  item.setCurrent_date(current_date);
+				  //item.setCurrent_date(current_date);
 				  l.addItem(item);
 				  i++;
 				  
@@ -201,7 +204,21 @@ public class TodoUtil {
 			}
 		}	
 		
-		System.out.print(l.getList().size());
+		//System.out.print(l.getList().size());
+		System.out.printf("총 %d개의 항복을 찾았습니다.\n", count);
+	}
+	
+	public static void findCategory(TodoList l, String word) {
+		// TODO Auto-generated method stub
+		int count = 0;
+		for (int i=0; i<l.getList().size(); i++) {
+			if(l.getItem(i).getCategory().contains(word)) {
+				System.out.println((i+1) + ". " + l.getItem(i).toString());
+				count++;
+			}
+		}	
+		
+		//System.out.print(l.getList().size());
 		System.out.printf("총 %d개의 항복을 찾았습니다.\n", count);
 	}
 

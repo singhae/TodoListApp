@@ -74,9 +74,14 @@ public class TodoMain {
 			case "help":
 				Menu.displaymenu();
 				break;
+				
 			case "find":
 				String word = sc.next();
 				TodoUtil.findList(l,word);
+				break;
+			case "find_cate":
+				String wordofcate = sc.next();
+				TodoUtil.findCategory(l,wordofcate);
 				break;
 				
 			case "exit": 
